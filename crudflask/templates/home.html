@@ -1,0 +1,103 @@
+{% extends "index.html" %}
+{% block title %} {{ title }}{% endblock %}
+{% block content %} 
+
+<div class="container">
+    {% for field , error in form.errors.items() %}
+    <div class="alert alert-danger">  {{ error.0  }} </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col col-md-12 ">
+             <div class="mt-1 bg-gris  rounded text-info text-center"><h1 class="well text-info" >Python Flask CRUD web App </h1></div>       
+                <table class="table  table-hover  bg-steel ">
+                    <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                    </tr>
+ {%for user in users %}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td>{{user.username}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.phone}}</td>
+                        <td> 
+                        <a href="/update/{{user.username}}" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modeledits-{{user.username}}">Edit</a>
+                        <a href="/delete/{{user.username}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>  
+{%endfor%}                   
+                </table>           
+        </div>
+    </div>  
+</div>       
+
+<!-- Modal Add User -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Employee</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                 
+            <form method="POST" action="{{ url_for('insert') }}">    <!-- Variable-->
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control form-control-lg") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control form-control-lg") }}   
+                </div>
+                <div class="mb-3">
+                    {{ form.phone.label(class="form-label") }}
+                    {{ form.phone(class="form-control form-control-lg") }}
+                </div>
+                <button type="submit" class="btn btn-primary float-end">Submit</button>
+                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+            </form>                
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal Edit User -->
+{%for user in users %}
+  <div class="modal fade" id="modeledits-{{user.username}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modeleditLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modeleditLabel">Edit User</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">                        
+            <form method="POST" action="/update/{{user.username}}">    <!-- Variable-->
+              {{ form.hidden_tag() }}
+              <div class="mb-3">
+                  {{ form.username.label(class="form-label") }}
+                  <input  id="username"  name="username"  class="form-control form-control-lg" type="text" value="{{ user.username }}"  />
+              </div>
+              <div class="mb-3">
+                  {{ form.email.label(class="form-label") }}
+                  <input  id="email"  name="email"  class="form-control form-control-lg" type="text" value="{{ user.email }}"  />
+              </div>
+              <div class="mb-3">
+                  {{ form.phone.label(class="form-label") }}
+                  <input  id="phone"  name="phone"  class="form-control form-control-lg" type="text" value="{{ user.phone }}"  />
+              </div>
+              <button type="submit" class="btn btn-primary float-end">Submit</button>
+              <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+          </form>               
+
+
+          </div>
+        </div>
+      </div>
+  </div>
+{%endfor%}
+
+{% endblock content %}
