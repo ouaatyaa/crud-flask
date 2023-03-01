@@ -24,3 +24,9 @@ class InsertForm(FlaskForm):
         if user:
             raise ValidationError('Email alredy used , pleaze choose another one')
 
+#-2------------Update form
+class UpdateForm(FlaskForm):
+    username = StringField('UserName:', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField('Email:',validators=[DataRequired(), Email()])
+    phone = StringField('Phone:')
+    submit = SubmitField('Sign Up')

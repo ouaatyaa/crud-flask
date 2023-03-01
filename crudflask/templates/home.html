@@ -6,32 +6,34 @@
     {% for field , error in form.errors.items() %}
     <div class="alert alert-danger">  {{ error.0  }} </div>
     {% endfor %}
-    <div class="row">
-        <div class="col col-md-12 ">
+<section class=" p-5 ">
              <div class="mt-1 bg-gris  rounded text-info text-center"><h1 class="well text-info" >Python Flask CRUD web App </h1></div>       
-                <table class="table  table-hover  bg-steel ">
-                    <tr>
-                            <th>ID</th>
+             <div class="table-responsive" id="no-more-tables">
+              <table class="table bg-white">
+                  <thead>
+                      <tr>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Action</th>
-                    </tr>
+                      </tr>
+                  </thead>  
+                  <tbody>
  {%for user in users %}
                     <tr>
-                        <td>{{user.id}}</td>
-                        <td>{{user.username}}</td>
-                        <td>{{user.email}}</td>
-                        <td>{{user.phone}}</td>
-                        <td> 
-                        <a href="/update/{{user.username}}" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modeledits-{{user.username}}">Edit</a>
-                        <a href="/delete/{{user.username}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">Delete</a>
+                        <td data-title="Name">{{user.username}}</ data-title="">
+                        <td data-title="Email">{{user.email}}</td>
+                        <td data-title="Phone">{{user.phone}}</td>
+                        <td data-title="Action"> 
+                        <a href="/update/{{user.username}}" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modeledits-{{user.username}}"><i class="bi bi-pen"></i></a>
+                        <a href="/delete/{{user.username}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>  
-{%endfor%}                   
-                </table>           
-        </div>
-    </div>  
+{%endfor%}       
+                  </tbody>
+                </table>
+    </div>                           
+  </section>
 </div>       
 
 <!-- Modal Add User -->

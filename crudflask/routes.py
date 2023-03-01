@@ -1,7 +1,7 @@
 from flask import  url_for,redirect,flash,render_template,request
 from crudflask import app , db
 from crudflask.models import User
-from crudflask.forms import InsertForm
+from crudflask.forms import InsertForm,UpdateForm
 
 
 @app.route("/")
@@ -25,13 +25,33 @@ def insert():
 
 @app.route("/update/<username>",methods=['GET', 'POST'])
 def update(username):
-    form = InsertForm()
+    form = UpdateForm()
     user =  User.query.filter_by(username=username).first()
     
     if form.validate_on_submit():
-        user.username = form.username.data
-        user.email = form.email.data
-        user.phone = form.phone.data 
+        if user.email != form.email.data:
+            
+            row = User.query.filter_by(email=form.email.data).first() 
+            if row:
+                flash('Email alredy used , pleaze choose another one','warning')
+                return redirect(url_for('home'))
+            user.email = form.email.data
+            
+        if user.username != form.username.data:
+            row = User.query.filter_by(email=form.username.data).first() 
+            if row:
+                flash('UserName alredy used , Pleaze choose another one','warning')
+                return redirect(url_for('home'))
+            user.username = form.username.data
+            
+        if  user.phone != form.phone.data:  
+            row = User.query.filter_by(email=form.phone.data).first() 
+            if row:
+                flash('Phone alredy used , Pleaze choose another one','warning')
+                return redirect(url_for('home'))            
+
+            user.phone = form.phone.data 
+           
         db.session.commit()
         flash("The user has beeen Update successfly",'success')
         return redirect(url_for('home'))
