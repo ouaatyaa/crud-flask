@@ -29,31 +29,34 @@ def update(username):
     user =  User.query.filter_by(username=username).first()
     
     if form.validate_on_submit():
+        change=False
         if user.email != form.email.data:
-            
             row = User.query.filter_by(email=form.email.data).first() 
+            change=True
             if row:
                 flash('Email alredy used , pleaze choose another one','warning')
                 return redirect(url_for('home'))
             user.email = form.email.data
             
         if user.username != form.username.data:
-            row = User.query.filter_by(email=form.username.data).first() 
+            row = User.query.filter_by(username=form.username.data).first() 
+            change=True
             if row:
-                flash('UserName alredy used , Pleaze choose another one','warning')
-                return redirect(url_for('home'))
-            user.username = form.username.data
+                flash('UserName alredy used , Pleaze choose another one','warning') 
+                return redirect(url_for('home'))               
+            user.username = form.username.data      
             
         if  user.phone != form.phone.data:  
-            row = User.query.filter_by(email=form.phone.data).first() 
+            row = User.query.filter_by(phone=form.phone.data).first() 
+            change=True
             if row:
                 flash('Phone alredy used , Pleaze choose another one','warning')
-                return redirect(url_for('home'))            
-
-            user.phone = form.phone.data 
-           
-        db.session.commit()
-        flash("The user has beeen Update successfly",'success')
+                return redirect(url_for('home'))
+            user.phone = form.phone.data                
+             
+        if change :   
+            db.session.commit()
+            flash("The user has beeen Update successfly",'success')
         return redirect(url_for('home'))
     elif request.method == 'GET':
         flash("Methos Gett","success")
